@@ -50,10 +50,11 @@ export default function CreateEvent() {
     <div className="container-app">
       <div className="max-w-md mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Brace's Beer Fest</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">BeerFestify</h1>
           <p className="text-gray-600">Setup your home beer tasting event</p>
         </div>
         
+        {/* Festival Setup Card */}
         <div className="card p-6 mb-6">
           <div className="flex items-center gap-2 mb-4">
             <span>⚙️</span>
@@ -61,7 +62,7 @@ export default function CreateEvent() {
           </div>
           <p className="text-gray-600 mb-6">Create your festival - attendees will join using the festival code</p>
           
-          <form onSubmit={onSubmit} className="space-y-4">
+          <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
               <input className="input" placeholder="e.g., John Smith" value={hostName} onChange={e => setHostName(e.target.value)} />
@@ -70,25 +71,47 @@ export default function CreateEvent() {
               <label className="block text-sm font-medium text-gray-700 mb-1">Festival Name</label>
               <input className="input" placeholder="e.g., Summer Beer Fest 2024" value={eventName} onChange={e => setEventName(e.target.value)} />
             </div>
-            <div className="mt-6">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Register your beer</label>
-              <input className="input" placeholder="Beer name" value={beerName} onChange={e => setBeerName(e.target.value)} />
-              <input className="input mt-2" placeholder="Brewery (optional)" value={beerBrewery} onChange={e => setBeerBrewery(e.target.value)} />
-              <input className="input mt-2" placeholder="Style (optional)" value={beerStyle} onChange={e => setBeerStyle(e.target.value)} />
-              <div className="mt-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Beer Photo (optional)</label>
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  onChange={e => setPhotoFile(e.target.files?.[0] ?? null)} 
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
-                />
-              </div>
-            </div>
-            {error && <div className="text-red-600 text-sm">{error}</div>}
-            <button className="btn btn-primary w-full" disabled={loading}>{loading ? 'Creating…' : 'Create Festival'}</button>
-          </form>
+          </div>
         </div>
+
+        {/* Beer Information Card */}
+        <div className="card p-6 mb-6">
+          <div className="flex items-center gap-2 mb-4">
+            <span>🍺</span>
+            <h2 className="text-xl font-semibold">Register Your Beer</h2>
+          </div>
+          <p className="text-gray-600 mb-6">Tell us about the beer you're bringing to the festival</p>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Beer Name</label>
+              <input className="input" placeholder="Beer name" value={beerName} onChange={e => setBeerName(e.target.value)} />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Brewery (optional)</label>
+              <input className="input" placeholder="Brewery name" value={beerBrewery} onChange={e => setBeerBrewery(e.target.value)} />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Style (optional)</label>
+              <input className="input" placeholder="e.g., IPA, Stout, Lager" value={beerStyle} onChange={e => setBeerStyle(e.target.value)} />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Beer Photo (optional)</label>
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={e => setPhotoFile(e.target.files?.[0] ?? null)} 
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Submit Form */}
+        <form onSubmit={onSubmit}>
+          {error && <div className="text-red-600 text-sm mb-4">{error}</div>}
+          <button className="btn btn-primary w-full" disabled={loading}>{loading ? 'Creating…' : 'Create Festival'}</button>
+        </form>
         
         <p className="text-sm text-gray-500 text-center">After creating the festival, share the code with attendees so they can join</p>
       </div>

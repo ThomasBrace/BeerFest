@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { clearSession, loadSession } from '../session'
+import { loadSession } from '../session'
 import { endEvent, listBeers, randomizeBeerOrder, listenToEventStatus, listAttendees } from '../services/firestore'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../firebase'
@@ -86,10 +86,6 @@ export default function Host() {
     navigate('/results')
   }
 
-  function onLogout() {
-    clearSession()
-    navigate('/')
-  }
 
   async function copyToClipboard() {
     try {
@@ -119,7 +115,7 @@ export default function Host() {
     <div className="container-app">
       <div className="max-w-md mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Host Panel</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
           <div className="flex items-center justify-center gap-2">
             <span className="badge badge-green">Code: {eventCode}</span>
           </div>
@@ -170,22 +166,6 @@ export default function Host() {
                 </p>
               </div>
             )}
-          </div>
-        </div>
-        
-        <div className="card p-6 mb-6">
-          <div className="flex items-center gap-2 mb-4">
-            <span>⚙️</span>
-            <h2 className="text-xl font-semibold">Event Management</h2>
-          </div>
-          
-          <div className="space-y-4">
-            <div className="flex gap-2">
-              <button type="button" className="btn btn-secondary flex-1" disabled={loading} onClick={onRandomize}>Randomize Order</button>
-              <button type="button" className="btn btn-danger flex-1" onClick={onEndEvent}>End Event</button>
-            </div>
-            <button className="btn btn-primary w-full" onClick={() => navigate('/score')}>Score Beers</button>
-            <button className="btn btn-secondary w-full" onClick={onLogout}>Leave Event</button>
           </div>
         </div>
         
@@ -260,10 +240,20 @@ export default function Host() {
               </div>
             </div>
           )}
+
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <div className="flex gap-2">
+              <button className="btn btn-green flex-1" onClick={() => navigate('/score')}>Score Beers</button>
+              <button type="button" className="btn btn-orange flex-1" onClick={onEndEvent}>End Scoring</button>
+            </div>
+          </div>
         </div>
         
         <div className="card p-6">
-          <h2 className="text-xl font-semibold mb-4">Beer List</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold">Beer List</h2>
+            <button type="button" className="btn btn-secondary" disabled={loading} onClick={onRandomize}>Randomize Order</button>
+          </div>
           <ol className="space-y-2">
             {beers.map(b => (
               <li key={b.id} className="flex items-center gap-3 p-2 rounded-lg bg-gray-50">
