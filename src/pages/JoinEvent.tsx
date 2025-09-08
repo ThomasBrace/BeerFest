@@ -3,6 +3,7 @@ import { joinEventByCode, addOrUpdateBeer } from '../services/firestore'
 import { uploadBeerPhoto } from '../services/storage'
 import { saveSession } from '../session'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Users, Beer, Trophy } from 'lucide-react'
 
 export default function JoinEvent() {
   const [searchParams] = useSearchParams()
@@ -61,7 +62,7 @@ export default function JoinEvent() {
       <div className="max-w-md mx-auto">
         <div className="text-center mb-8">
           <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-            <span className="text-2xl">🏆</span>
+            <Trophy className="w-8 h-8 text-green-600" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Join Festival</h1>
         </div>
@@ -69,7 +70,7 @@ export default function JoinEvent() {
         {/* Festival Code and Name Card */}
         <div className="card p-6 mb-6">
           <div className="flex items-center gap-2 mb-4">
-            <span>👥</span>
+            <Users className="w-6 h-6 text-orange-500" />
             <h2 className="text-xl font-semibold">Enter Festival Details</h2>
           </div>
           <p className="text-gray-600 mb-6">Enter the festival code provided by the organizer and your name</p>
@@ -89,7 +90,7 @@ export default function JoinEvent() {
         {/* Beer Information Card */}
         <div className="card p-6 mb-6">
           <div className="flex items-center gap-2 mb-4">
-            <span>🍺</span>
+            <Beer className="w-6 h-6 text-orange-500" />
             <h2 className="text-xl font-semibold">Register Your Beer (Optional)</h2>
           </div>
           <p className="text-gray-600 mb-6">Tell us about the beer you're bringing to the festival, or leave blank to join as a taster only</p>

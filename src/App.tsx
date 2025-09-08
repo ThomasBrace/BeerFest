@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { loadSession, clearSession } from './session'
+import { Settings, Plus, Users, HelpCircle, RefreshCw } from 'lucide-react'
 import CreateEvent from './pages/CreateEvent'
 import JoinEvent from './pages/JoinEvent'
 import Host from './pages/Host'
 import Score from './pages/Score'
 import Results from './pages/Results'
+import HowItWorks from './pages/HowItWorks'
 
 function HomePage() {
   const session = loadSession()
@@ -28,7 +30,7 @@ function HomePage() {
         {session && (
           <div className="card p-4 mb-4">
             <div className="flex items-center gap-2 mb-2">
-              <span>🔄</span>
+              <RefreshCw className="w-5 h-5 text-orange-500" />
               <h3 className="font-semibold">Continue Your Session</h3>
             </div>
             <p className="text-sm text-gray-600 mb-3">
@@ -55,12 +57,16 @@ function HomePage() {
         )}
         
         <Link to="/create" className="btn btn-primary w-full flex items-center justify-center gap-2">
-          <span>⚙️</span>
+          <Settings className="w-5 h-5" />
           Organize Festival
         </Link>
         <Link to="/join" className="btn btn-secondary w-full flex items-center justify-center gap-2">
-          <span>👥</span>
+          <Users className="w-5 h-5" />
           Join Festival
+        </Link>
+        <Link to="/how-it-works" className="btn btn-secondary w-full flex items-center justify-center gap-2">
+          <HelpCircle className="w-5 h-5" />
+          How It Works
         </Link>
       </div>
       
@@ -107,15 +113,25 @@ export default function App() {
           </Link>
           <nav className="flex gap-2">
             {session?.isHost && (
-              <Link to="/host" className="btn btn-primary">Settings</Link>
+              <Link to="/host" className="btn btn-primary flex items-center gap-2">
+                <Settings className="w-4 h-4" />
+                Settings
+              </Link>
             )}
-            <Link to="/create" className="btn btn-secondary">Create</Link>
-            <Link to="/join" className="btn btn-primary">Join</Link>
+            <Link to="/create" className="btn btn-secondary flex items-center gap-2">
+              <Plus className="w-4 h-4" />
+              Create
+            </Link>
+            <Link to="/join" className="btn btn-primary flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              Join
+            </Link>
           </nav>
         </div>
       </header>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/create" element={<CreateEvent />} />
         <Route path="/join" element={<JoinEvent />} />
         <Route path="/host" element={<Host />} />

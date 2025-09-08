@@ -5,6 +5,7 @@ import { db } from '../firebase'
 import type { Beer, Category, Score } from '../types'
 import { CATEGORIES } from '../types'
 import { listBeers, listAttendees } from '../services/firestore'
+import { Trophy, AlertTriangle } from 'lucide-react'
 
 export default function Results() {
   const session = loadSession()
@@ -128,7 +129,7 @@ export default function Results() {
         {tally.totalWinner && (
           <div className="card p-6 mb-8 text-center">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <span className="text-3xl">🏆</span>
+              <Trophy className="w-12 h-12 text-orange-500" />
               <h2 className="text-2xl font-bold text-gray-900">Winner</h2>
             </div>
             <div className="text-xl font-semibold text-orange-600">
@@ -144,7 +145,7 @@ export default function Results() {
         {Object.keys(attendeeNameById).length > Object.keys(validAttendeeNames).length && (
           <div className="card p-6 mb-8 bg-yellow-50 border-yellow-200">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-yellow-600">⚠️</span>
+              <AlertTriangle className="w-5 h-5 text-yellow-600" />
               <h3 className="text-lg font-semibold text-yellow-800">Incomplete Scores</h3>
             </div>
             <p className="text-yellow-700">

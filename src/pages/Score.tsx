@@ -6,6 +6,7 @@ import { db } from '../firebase'
 import type { Beer, Category, Score } from '../types'
 import { CATEGORIES } from '../types'
 import { useNavigate } from 'react-router-dom'
+import { CheckCircle, AlertTriangle } from 'lucide-react'
 
 export default function Score() {
   const navigate = useNavigate()
@@ -230,19 +231,21 @@ export default function Score() {
                 </div>
               ))}
               
-              {/* Validation status */}
-              <div className="text-center">
-                {!allCategoriesScored() && (
-                  <div className="text-sm text-red-600 mb-2">
-                    ⚠️ Please score all categories before submitting
-                  </div>
-                )}
-                {allCategoriesScored() && (
-                  <div className="text-sm text-green-600 mb-2">
-                    ✅ All categories scored - ready to submit!
-                  </div>
-                )}
-              </div>
+                          {/* Validation status */}
+                          <div className="text-center">
+                            {!allCategoriesScored() && (
+                              <div className="text-sm text-red-600 mb-2 flex items-center justify-center gap-1">
+                                <AlertTriangle className="w-4 h-4" />
+                                Please score all categories before submitting
+                              </div>
+                            )}
+                            {allCategoriesScored() && (
+                              <div className="text-sm text-green-600 mb-2 flex items-center justify-center gap-1">
+                                <CheckCircle className="w-4 h-4" />
+                                All categories scored - ready to submit!
+                              </div>
+                            )}
+                          </div>
               
               {error && <div className="text-red-600 text-sm text-center">{error}</div>}
               {message && <div className="text-green-700 text-sm text-center">{message}</div>}

@@ -6,6 +6,7 @@ import { db } from '../firebase'
 import type { Beer, Attendee, Score } from '../types'
 import { useNavigate } from 'react-router-dom'
 import QRCode from 'qrcode'
+import { Smartphone, BarChart } from 'lucide-react'
 
 export default function Host() {
   const navigate = useNavigate()
@@ -123,7 +124,7 @@ export default function Host() {
 
         <div className="card p-6 mb-6">
           <div className="flex items-center gap-2 mb-4">
-            <span>📱</span>
+            <Smartphone className="w-6 h-6 text-orange-500" />
             <h2 className="text-xl font-semibold">Share Event</h2>
           </div>
           
@@ -171,7 +172,7 @@ export default function Host() {
         
         <div className="card p-6 mb-6">
           <div className="flex items-center gap-2 mb-4">
-            <span>📊</span>
+            <BarChart className="w-6 h-6 text-orange-500" />
             <h2 className="text-xl font-semibold">Scoring Progress</h2>
           </div>
           

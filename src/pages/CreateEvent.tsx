@@ -4,6 +4,7 @@ import { uploadBeerPhoto } from '../services/storage'
 import { saveSession } from '../session'
 import { useNavigate } from 'react-router-dom'
 import { ensureAnonymousAuth } from '../firebase'
+import { Settings, Beer } from 'lucide-react'
 
 export default function CreateEvent() {
   const [hostName, setHostName] = useState('')
@@ -57,7 +58,7 @@ export default function CreateEvent() {
         {/* Festival Setup Card */}
         <div className="card p-6 mb-6">
           <div className="flex items-center gap-2 mb-4">
-            <span>⚙️</span>
+            <Settings className="w-6 h-6 text-orange-500" />
             <h2 className="text-xl font-semibold">Festival Setup</h2>
           </div>
           <p className="text-gray-600 mb-6">Create your festival - attendees will join using the festival code</p>
@@ -77,7 +78,7 @@ export default function CreateEvent() {
         {/* Beer Information Card */}
         <div className="card p-6 mb-6">
           <div className="flex items-center gap-2 mb-4">
-            <span>🍺</span>
+            <Beer className="w-6 h-6 text-orange-500" />
             <h2 className="text-xl font-semibold">Register Your Beer</h2>
           </div>
           <p className="text-gray-600 mb-6">Tell us about the beer you're bringing to the festival</p>
