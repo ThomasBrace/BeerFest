@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Events: Allow read access to all, write only for authenticated users (hosts)
+    match /events/{eventId} {
+      allow read: if true; // Anyone can read events
+      allow write: if request.auth != null; // Only authenticated users (hosts) can create/modify events
+    }
+    
+    // Attendees: Allow read/write for all (no authentication required)
+    match /attendees/{attendeeId} {
+      allow read, write: if true; // Anyone can join events and read attendee info
+    }
+    
+    // Beers: Allow read for all, write for all (attendees can add their beers)
+    match /beers/{beerId} {
+      allow read: if true; // Anyone can read beer info
+      allow write: if true; // Anyone can add/modify beers
+    }
+    
+    // Scores: Allow read/write for all (attendees can score beers)
+    match /scores/{scoreId} {
+      allow read, write: if true; // Anyone can read/write scores
+    }
+  }
+}
