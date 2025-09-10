@@ -275,17 +275,7 @@ export default function Host() {
         <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold">Beer List</h2>
-            <div className="flex gap-2">
-              <button 
-                type="button" 
-                className="btn btn-orange flex items-center gap-2" 
-                onClick={() => setShowAddBeerForm(true)}
-              >
-                <Plus className="w-4 h-4" />
-                Add Beer
-              </button>
-              <button type="button" className="btn btn-secondary" disabled={loading} onClick={onRandomize}>Randomize Order</button>
-            </div>
+            <button type="button" className="btn btn-secondary" disabled={loading} onClick={onRandomize}>Randomize Order</button>
           </div>
           
           {showAddBeerForm && (
@@ -322,6 +312,17 @@ export default function Host() {
               </li>
             ))}
           </ol>
+          
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <button 
+              type="button" 
+              className="btn btn-orange w-full flex items-center justify-center gap-2" 
+              onClick={() => setShowAddBeerForm(true)}
+            >
+              <Plus className="w-4 h-4" />
+              Add Beer
+            </button>
+          </div>
         </div>
       </div>
 
