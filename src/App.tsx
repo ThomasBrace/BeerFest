@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { loadSession, clearSession } from './session'
-import { Settings, Plus, Users, HelpCircle, RefreshCw } from 'lucide-react'
+import { Settings, Users, HelpCircle, RefreshCw } from 'lucide-react'
 import CreateEvent from './pages/CreateEvent'
 import JoinEvent from './pages/JoinEvent'
 import Host from './pages/Host'
