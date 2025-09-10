@@ -8,6 +8,7 @@ import Host from './pages/Host'
 import Score from './pages/Score'
 import Results from './pages/Results'
 import HowItWorks from './pages/HowItWorks'
+import BurgerMenu from './components/BurgerMenu'
 
 function HomePage() {
   const session = loadSession()
@@ -111,22 +112,7 @@ export default function App() {
             <img src="/beerfest-logo.png" alt="Beerfest" className="h-8 w-8" />
             BeerFestify
           </Link>
-          <nav className="flex gap-2">
-            {session?.isHost && (
-              <Link to="/host" className="btn btn-primary flex items-center gap-2">
-                <Settings className="w-4 h-4" />
-                Settings
-              </Link>
-            )}
-            <Link to="/create" className="btn btn-secondary flex items-center gap-2">
-              <Plus className="w-4 h-4" />
-              Create
-            </Link>
-            <Link to="/join" className="btn btn-primary flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              Join
-            </Link>
-          </nav>
+          <BurgerMenu session={session} />
         </div>
       </header>
       <Routes>

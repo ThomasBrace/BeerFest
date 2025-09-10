@@ -96,6 +96,9 @@ export default function Score() {
   useEffect(() => {
     if (activeBeerId && beers.length > 0) {
       loadExistingScore(activeBeerId)
+      // Clear any existing messages when switching beers
+      setMessage(null)
+      setError(null)
     }
   }, [activeBeerId])
 

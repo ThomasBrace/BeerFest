@@ -79,3 +79,29 @@ body {
 }
 .badge-green { background-color: var(--brand-green); color: #0b3010; }
 .badge-orange { background-color: var(--brand-orange); color: #fff; }
+
+/* Burger Menu Styles */
+.btn-red {
+  @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-600;
+}
+
+/* Ensure burger menu appears above other content */
+.burger-menu-overlay {
+  z-index: 9999;
+}
+
+/* Smooth transitions for burger menu */
+.burger-menu-panel {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .container-app {
+    @apply px-3;
+  }
+  
+  .brand-title {
+    @apply text-lg;
+  }
+}
