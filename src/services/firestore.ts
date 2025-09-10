@@ -2,6 +2,7 @@ import { auth, db } from '../firebase'
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -188,6 +189,27 @@ export async function getEvent(eventId: string): Promise<Event | null> {
   const d = await getDoc(doc(db, 'events', eventId))
   if (!d.exists()) return null
   return { id: d.id, ...(d.data() as Omit<Event, 'id'>) }
+}
+
+export async function deleteBeer(eventId: string, beerId: string) {
+  // Delete the beer document
+  await deleteDoc(doc(db, 'beers', beerId))
+  
+  // Update the event's beerOrder to remove the deleted beer
+  const event = await getEvent(eventId)
+  if (event) {
+    const updatedBeerOrder = event.beerOrder.filter(id => id !== beerId)
+    await updateDoc(doc(db, 'events', eventId), { beerOrder: updatedBeerOrder })
+  }
+  
+  // Delete all scores for this beer
+  const scoresQuery = query(
+    collection(db, 'scores'),
+    where('eventId', '==', eventId),
+    where('beerId', '==', beerId)
+  )
+  const scoresSnap = await getDocs(scoresQuery)
+  await Promise.all(scoresSnap.docs.map(doc => deleteDoc(doc.ref)))
 }
 
 export function listenToEventStatus(eventId: string, callback: (event: Event | null) => void): () => void {

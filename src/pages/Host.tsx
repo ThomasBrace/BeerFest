@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { loadSession } from '../session'
-import { endEvent, listBeers, randomizeBeerOrder, listenToEventStatus, listAttendees } from '../services/firestore'
+import { endEvent, listBeers, randomizeBeerOrder, listenToEventStatus, listAttendees, deleteBeer } from '../services/firestore'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../firebase'
 import type { Beer, Attendee, Score } from '../types'
 import { useNavigate } from 'react-router-dom'
 import QRCode from 'qrcode'
-import { Smartphone, BarChart } from 'lucide-react'
+import { Smartphone, BarChart, Plus, Trash2 } from 'lucide-react'
+import AddBeerForm from '../components/AddBeerForm'
 
 export default function Host() {
   const navigate = useNavigate()
@@ -18,6 +19,8 @@ export default function Host() {
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('')
   const [joinUrl, setJoinUrl] = useState<string>('')
   const [copySuccess, setCopySuccess] = useState<string>('')
+  const [showAddBeerForm, setShowAddBeerForm] = useState(false)
+  const [beerToDelete, setBeerToDelete] = useState<Beer | null>(null)
 
   useEffect(() => {
     if (!session?.isHost) {
@@ -85,6 +88,25 @@ export default function Host() {
     if (!session) return
     await endEvent(session.eventId)
     navigate('/results')
+  }
+
+  async function handleDeleteBeer(beer: Beer) {
+    if (!session) return
+    setLoading(true)
+    try {
+      await deleteBeer(session.eventId, beer.id)
+      await refresh()
+      setBeerToDelete(null)
+    } catch (error) {
+      console.error('Failed to delete beer:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleBeerAdded() {
+    await refresh()
+    setShowAddBeerForm(false)
   }
 
 
@@ -253,8 +275,30 @@ export default function Host() {
         <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold">Beer List</h2>
-            <button type="button" className="btn btn-secondary" disabled={loading} onClick={onRandomize}>Randomize Order</button>
+            <div className="flex gap-2">
+              <button 
+                type="button" 
+                className="btn btn-orange flex items-center gap-2" 
+                onClick={() => setShowAddBeerForm(true)}
+              >
+                <Plus className="w-4 h-4" />
+                Add Beer
+              </button>
+              <button type="button" className="btn btn-secondary" disabled={loading} onClick={onRandomize}>Randomize Order</button>
+            </div>
           </div>
+          
+          {showAddBeerForm && (
+            <div className="mb-6">
+              <AddBeerForm
+                eventId={session?.eventId || ''}
+                hostAttendeeId={session?.attendeeId || ''}
+                onBeerAdded={handleBeerAdded}
+                onCancel={() => setShowAddBeerForm(false)}
+              />
+            </div>
+          )}
+          
           <ol className="space-y-2">
             {beers.map(b => (
               <li key={b.id} className="flex items-center gap-3 p-2 rounded-lg bg-gray-50">
@@ -263,12 +307,54 @@ export default function Host() {
                   <div className="font-medium">{b.name}</div>
                   <div className="text-sm text-gray-600">{b.brewery} — {b.style}</div>
                 </div>
-                {b.tasted ? <span className="badge badge-green">tasted</span> : <span className="badge badge-orange">pending</span>}
+                <div className="flex items-center gap-2">
+                  {b.tasted ? <span className="badge badge-green">tasted</span> : <span className="badge badge-orange">pending</span>}
+                  <button
+                    type="button"
+                    onClick={() => setBeerToDelete(b)}
+                    className="text-red-500 hover:text-red-700 p-1"
+                    disabled={loading}
+                    title="Remove beer"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </li>
             ))}
           </ol>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      {beerToDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4">Remove Beer</h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to remove <strong>{beerToDelete.name}</strong> from this event? 
+              This will also delete all scores for this beer and cannot be undone.
+            </p>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => handleDeleteBeer(beerToDelete)}
+                className="btn btn-red flex-1"
+                disabled={loading}
+              >
+                {loading ? 'Removing...' : 'Remove Beer'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setBeerToDelete(null)}
+                className="btn btn-secondary flex-1"
+                disabled={loading}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
